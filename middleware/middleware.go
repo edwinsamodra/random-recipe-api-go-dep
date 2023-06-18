@@ -1,7 +1,9 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
+	"os"
 	"strings"
 	"webapp1/util"
 
@@ -13,7 +15,11 @@ var JWTSecretKey = []byte("secret-key")
 
 func ValidateAPIKey() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		const apiKey string = "aw13u210312321"
+		var apiKey string = os.Getenv("API_KEY")
+		if apiKey == "" {
+			log.Fatal("abort")
+		}
+
 		//check header ada atau tidak
 		key := ctx.GetHeader("x-api-key")
 
